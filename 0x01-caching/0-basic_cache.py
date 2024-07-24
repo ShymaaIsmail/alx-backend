@@ -15,10 +15,4 @@ class BasicCache(BaseCaching):
 
     def get(self, key):
         """get"""
-        value = None
-        try:
-            if key:
-                value = self.cache_data[key]
-        except KeyError:
-            return value
-        return value
+        return self.cache_data.get(key, None)
