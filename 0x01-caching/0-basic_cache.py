@@ -15,7 +15,11 @@ class BasicCache(BaseCaching):
             self.cache_data[key] = item
 
     def get(self, key):
-        '''return the value in `self.cache_data` linked to `key`
-        '''
-
-        return self.cache_data.get(key, None)
+        """get"""
+        value = None
+        try:
+            if key:
+                value = self.cache_data[key]
+        except KeyError:
+            return value
+        return value
