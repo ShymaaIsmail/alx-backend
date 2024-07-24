@@ -8,16 +8,14 @@ class BasicCache(BaseCaching):
     """Basic Caching"""
 
     def put(self, key, item):
-        """put"""
+        '''assign to the dictionary `self.cache_data` the
+           `item` value for the key `key`
+        '''
         if key is not None and item is not None:
             self.cache_data[key] = item
 
     def get(self, key):
-        """get"""
-        value = None
-        try:
-            if key:
-                value = self.cache_data[key]
-        except KeyError:
-            return value
-        return value
+        '''return the value in `self.cache_data` linked to `key`
+        '''
+
+        return self.cache_data.get(key, None)
