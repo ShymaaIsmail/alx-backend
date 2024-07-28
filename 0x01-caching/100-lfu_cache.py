@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ LFU Cache """
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from base_caching import BaseCaching
 
 
@@ -10,8 +10,7 @@ class LFUCache(BaseCaching):
         """Initialize LFUCache"""
         super().__init__()
         self.freq = defaultdict(int)  # Frequency of each key
-        self.use_order = defaultdict(list)  # List of keys for each frequency
-        self.key_order = []  # Order of keys by recency of use
+        self.use_order = defaultdict(OrderedDict)  # dict of keys for each freq
         self.min_freq = 0
 
     def put(self, key, item):
@@ -30,8 +29,7 @@ class LFUCache(BaseCaching):
             # Add new item
             self.cache_data[key] = item
             self.freq[key] = 1
-            self.use_order[1].append(key)
-            self.key_order.append(key)
+            self.use_order[1][key] = None
             self.min_freq = 1
 
     def get(self, key):
@@ -46,37 +44,21 @@ class LFUCache(BaseCaching):
     def _update_frequency(self, key):
         """Update the frequency of the key"""
         freq = self.freq[key]
-        self.freq[key] += 1
-        self.use_order[freq].remove(key)
+        del self.use_order[freq][key]
         if not self.use_order[freq]:
             del self.use_order[freq]
             if self.min_freq == freq:
                 self.min_freq += 1
-        self.use_order[freq + 1].append(key)
-
-        # Move key to the end to mark it as recently used
-        self.key_order.remove(key)
-        self.key_order.append(key)
+        self.freq[key] += 1
+        self.use_order[freq + 1][key] = None
 
     def _evict_least_frequent(self):
         """Evict the least frequently used item"""
-        # Find the keys with the minimum frequency
         least_freq_keys = self.use_order[self.min_freq]
-        if len(least_freq_keys) == 1:
-            # Only one key to evict
-            key_to_evict = least_freq_keys.pop()
-        else:
-            # More than one key with the same minimum frequency, apply LRU
-            for key in self.key_order:
-                if key in least_freq_keys:
-                    key_to_evict = key
-                    self.key_order.remove(key)
-                    break
-            least_freq_keys.remove(key_to_evict)
-
-        if not self.use_order[self.min_freq]:
+        key_to_evict = next(iter(least_freq_keys))
+        del least_freq_keys[key_to_evict]
+        if not least_freq_keys:
             del self.use_order[self.min_freq]
-
         del self.cache_data[key_to_evict]
         del self.freq[key_to_evict]
         print(f"DISCARD: {key_to_evict}")
