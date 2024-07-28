@@ -66,5 +66,5 @@ class LFUCache(BaseCaching):
     def print_cache(self):
         """Print the cache data"""
         print("Current cache:")
-        for key in self.cache_data:
-            print(f"{key}: {self.cache_data[key]}")
+        for key, value in self.cache_data.items():
+            print(f"{key}: {value}")
