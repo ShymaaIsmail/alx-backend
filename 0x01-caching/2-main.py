@@ -1,18 +1,23 @@
 #!/usr/bin/python3
-""" 2-main """
-LIFOCache = __import__('2-lifo_cache').LIFOCache
+"""
+Test
+"""
+import sys
 
-my_cache = LIFOCache()
-my_cache.put("A", "Hello")
-my_cache.put("B", "World")
-my_cache.put("C", "Holberton")
-my_cache.put("D", "School")
-my_cache.print_cache()
-my_cache.put("E", "Battery")
-my_cache.print_cache()
-my_cache.put("C", "Street")
-my_cache.print_cache()
-my_cache.put("F", "Mission")
-my_cache.print_cache()
-my_cache.put("G", "San Francisco")
-my_cache.print_cache()
+try:
+    LIFOCache = __import__('2-lifo_cache').LIFOCache
+    from base_caching import BaseCaching
+
+    BaseCaching.MAX_ITEMS = 2
+    LIFOCache.MAX_ITEMS = 2
+    my_cache = LIFOCache()
+    my_cache.MAX_ITEMS = 2
+
+    for i in range(10):
+        key = "key-{}".format(i)
+        value = "value-{}".format(i)
+        my_cache.put(key, value)
+        my_cache.print_cache()
+        
+except:
+    print(sys.exc_info()[1])
