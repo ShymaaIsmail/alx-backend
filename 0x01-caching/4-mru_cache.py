@@ -20,14 +20,14 @@ class MRUCache(BaseCaching):
             self.cache_data.move_to_end(key, last= False)
         self.cache_data[key] = item
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            # Pop the first item (least recently used)
-            discarded_key, _ = self.cache_data.popitem()
+            # Pop the first item (most recently used)
+            discarded_key, _ = self.cache_data.popitem(last=False)
             print(f"DISCARD: {discarded_key}")
 
     def get(self, key):
         """get item in cache"""
         if key is None or key not in self.cache_data:
             return None
-        # Move the accessed key to the end to show it was recently used
+        # Move the accessed key to the beginning to show it was recently used
         self.cache_data.move_to_end(key, last= False)
         return self.cache_data[key]
