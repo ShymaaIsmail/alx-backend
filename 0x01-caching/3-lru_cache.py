@@ -5,13 +5,14 @@ from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """LRUCache"""
+    """LRUCache class"""
     def __init__(self):
         """initialize LRUCache"""
         super().__init__()
         self.cache_data = OrderedDict()
 
     def put(self, key, item):
+        """put item in cache"""
         if key is None or item is None:
             return
         if key in self.cache_data:
@@ -24,6 +25,7 @@ class LRUCache(BaseCaching):
             print(f"DISCARD: {discarded_key}")
 
     def get(self, key):
+        """get item in cache"""
         if key is None or key not in self.cache_data:
             return None
         # Move the accessed key to the end to show it was recently used
