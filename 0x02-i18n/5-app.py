@@ -2,7 +2,7 @@
 """a-app.py"""
 
 from flask import Flask, request, render_template, g
-from flask_babel import Babel, gettext
+from flask_babel import Babel
 
 app = Flask(__name__)
 
@@ -47,7 +47,7 @@ def get_locale():
     if g.user and g.user['locale'] in app.config['LANGUAGES']:
         return g.user['locale']
     locale = request.args.get('locale')
-    if locale and locale in app.config['LANGUAGES']:
+    if not g.user and locale and locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
@@ -55,7 +55,8 @@ def get_locale():
 @app.route('/')
 def index():
     """Task 5"""
-    return render_template('5-index.html')
+    user_locale = get_locale()
+    return render_template('5-index.html', user_locale=user_locale)
 
 
 if __name__ == '__main__':
