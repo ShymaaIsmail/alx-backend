@@ -45,12 +45,12 @@ def before_request():
 def get_locale():
     """get locale """
     locale = request.args.get('locale')
-    if not g.user and locale and locale in app.config['LANGUAGES']:
+    if locale and locale in app.config['LANGUAGES']:
         return locale
     if g.user and g.user['locale'] in app.config['LANGUAGES']:
         return g.user['locale']
     locale = request.headers.get('locale')
-    if not g.user and locale and locale in app.config['LANGUAGES']:
+    if locale and locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 

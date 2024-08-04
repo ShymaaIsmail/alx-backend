@@ -87,7 +87,7 @@ def index():
     formatted_time = format_datetime(current_time)
     current_time_message = _('current_time_is',
                              current_time=formatted_time)
-    return render_template('7-index.html', user_locale=user_locale,
+    return render_template('index.html', user_locale=user_locale,
                            current_time_message=current_time_message)
 
 
