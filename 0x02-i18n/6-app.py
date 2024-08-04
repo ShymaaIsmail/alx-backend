@@ -59,7 +59,7 @@ def get_locale():
 def index():
     """Task 6"""
     user_locale = get_locale()
-    return render_template('5-index.html', user_locale=user_locale)
+    return render_template('6-index.html', user_locale=user_locale)
 
 
 if __name__ == '__main__':
