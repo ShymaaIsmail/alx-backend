@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""a-app.py"""
+
 from flask import Flask, request, render_template, g
 from flask_babel import Babel, gettext
 
